@@ -1,34 +1,49 @@
 # hafermilch.de
 
-Statische Landingpage fur die Domain `hafermilch.de`. Der Fokus liegt auf
-Domain-Anfragen fur Verhandlungen und optionalen Werbeplatzierungen an den
-Seiten.
+Landingpage für die Domain `hafermilch.de` mit Kontaktformular und schlankem
+PHP-Mailversand. Der Fokus liegt auf Domain-Anfragen für Verhandlungen und
+optionalen Werbeplatzierungen.
 
 ## Getting Started
 
-Die Seite braucht keinen Build-Schritt. Lokal einfach `index.html` im Browser
-offnen oder einen kleinen statischen Server starten:
+Die Seite braucht keinen Build-Schritt. Für das Formular wird nur ein Webserver
+mit PHP benötigt.
+
+Lokal starten:
 
 ```bash
-python -m http.server 3000
+php -S localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser.
+Dann `http://localhost:3000` im Browser öffnen.
 
 ## Kontaktformular
 
-Das Formular nutzt bewusst `mailto:kontakt@hafermilch.de`, damit kein Backend
-oder Datenbank-Setup notwendig ist. Bei Bedarf kann spater ein API Route Handler
-oder ein Dienst wie Resend angebunden werden.
+Das Formular sendet per `POST` an [send.php](./send.php) und verschickt die
+Anfrage an `info@hafermilch.de`.
 
-## Deploy on Vercel
+Es gibt zwei Versandwege:
 
-Vercel kann das Repository als statische Seite deployen. Es gibt keine
-Dependencies und keinen Build Command.
+- Standardmäßig über PHP `mail()`, wenn der Webserver das bereits unterstützt.
+- Optional per SMTP über [smtp-config.php](./smtp-config.php).
 
-```bash
-vercel
-vercel --prod
-```
+Wenn `mail()` auf deinem Hosting nicht funktioniert, trägst du in
+[smtp-config.php](./smtp-config.php) diese Werte ein:
 
-Alternativ nach GitHub pushen und das Repository in Vercel importieren.
+- `smtp_host`
+- `smtp_port`
+- `smtp_encryption`
+- `smtp_username`
+- `smtp_password`
+
+Zusätzlich kannst du dort `from_email`, `from_name` und `to_email` anpassen.
+
+## Zustellung
+
+Für zuverlässige Zustellung sollten passende SPF-, DKIM- und DMARC-Einträge für
+die Domain gesetzt sein.
+
+## Deployment
+
+Dieses Setup ist für klassische PHP-Webserver oder Shared Hosting gedacht.
+Vercel ist dafür nicht geeignet.

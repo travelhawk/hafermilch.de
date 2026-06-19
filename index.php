@@ -1,23 +1,5 @@
 <?php
 $status = $_GET['status'] ?? null;
-$topic = $_GET['topic'] ?? 'domain';
-
-$contactVariants = [
-    'domain' => [
-        'headline' => 'Interesse an hafermilch.de?',
-        'copy' => 'Beschreiben Sie kurz, wer anfragt und wie die Domain genutzt werden soll. Die Anfrage wird direkt an info@hafermilch.de gesendet.',
-        'message' => 'Ich interessiere mich für hafermilch.de und möchte über einen Erwerb oder eine Kooperation sprechen.',
-        'button' => 'Anfrage senden',
-    ],
-    'ads' => [
-        'headline' => 'Interesse als Werbepartner?',
-        'copy' => 'Teilen Sie kurz mit, welche Platzierung Sie anfragen und welche Marke oder welches Angebot beworben werden soll. Die Anfrage geht direkt an info@hafermilch.de.',
-        'message' => 'Ich interessiere mich für eine Werbepartnerschaft auf hafermilch.de und möchte verfügbare Platzierungen sowie Konditionen anfragen.',
-        'button' => 'Werbeanfrage senden',
-    ],
-];
-
-$contactContent = $contactVariants[$topic] ?? $contactVariants['domain'];
 
 $messages = [
     'success' => [
@@ -57,7 +39,7 @@ $flash = $messages[$status] ?? null;
       <a class="brand" href="#top">hafermilch.de</a>
       <nav aria-label="Hauptnavigation">
         <a href="#domain">Domain</a>
-        <a href="#werbung">Werbung</a>
+        <a href="./werbeflaechen.php">Werbung</a>
         <a href="#kontakt">Kontakt</a>
       </nav>
       <a class="header-cta" href="#kontakt">Anfrage senden</a>
@@ -71,12 +53,13 @@ $flash = $messages[$status] ?? null;
             <h1>hafermilch.de ist die Premium-Domain für den Haferdrink-Markt.</h1>
             <p class="lead">
               Eine merkfähige deutsche Domain für Haferdrinks, pflanzliche
-              Ernährung, Handel, Content oder Kampagnen. Wer Interesse hat,
-              kann direkt ein Kontaktformular ausfüllen.
+              Ernährung, Handel, Content oder Kampagnen. Wer eine starke
+              Position in dieser Kategorie besetzen will, bekommt hier den
+              direktesten Namen im Markt.
             </p>
             <div class="hero-actions">
               <a class="button primary" href="#kontakt">Verhandlung anfragen</a>
-              <a class="button secondary" href="./index.php?topic=ads#kontakt">Werbeflächen ansehen</a>
+              <a class="button secondary" href="./werbeflaechen.php">Werbeflächen anfragen</a>
             </div>
           </div>
 
@@ -94,12 +77,6 @@ $flash = $messages[$status] ?? null;
       </section>
 
       <div class="page-grid">
-        <aside class="rail rail-left">
-          <a class="ad-rail" href="./index.php?topic=ads#kontakt" aria-label="Linke Werbefläche buchen">
-            <span>Werbung</span>
-          </a>
-        </aside>
-
         <div class="content">
           <section id="domain" class="section">
             <div class="split">
@@ -142,47 +119,16 @@ $flash = $messages[$status] ?? null;
             />
           </section>
 
-          <section id="werbung" class="section ad-section">
-            <div class="split">
-              <div>
-                <p class="section-kicker">Zusätzliche Idee</p>
-                <h2>Werbeplätze am Rand können später monetarisiert werden.</h2>
-              </div>
-              <div class="ad-cards">
-                <a class="ad-card-link" href="./index.php?topic=ads#kontakt" aria-label="Sidebar links anfragen">
-                  <article>
-                    <span>Sidebar links</span>
-                    <strong>170 x flexibel</strong>
-                    <p>Für Sponsored Links, Partnerangebote oder Display Ads.</p>
-                  </article>
-                </a>
-                <a class="ad-card-link" href="./index.php?topic=ads#kontakt" aria-label="Sidebar rechts anfragen">
-                  <article>
-                    <span>Sidebar rechts</span>
-                    <strong>170 x flexibel</strong>
-                    <p>Ideal für Marken, Shops, Coupons oder Newsletter-Leads.</p>
-                  </article>
-                </a>
-                <a class="ad-card-link wide" href="./index.php?topic=ads#kontakt" aria-label="Native Platzierung anfragen">
-                  <article class="wide">
-                    <span>Content-nah</span>
-                    <strong>Native Platzierungen</strong>
-                    <p>
-                      Später erweiterbar um Rezept-Content, Marktvergleich oder
-                      Anbieterprofile.
-                    </p>
-                  </article>
-                </a>
-              </div>
-            </div>
-          </section>
-
           <section id="kontakt" class="section contact-section">
             <div class="split">
               <div>
                 <p class="section-kicker">Kontaktformular</p>
-                <h2><?= htmlspecialchars($contactContent['headline'], ENT_QUOTES, 'UTF-8') ?></h2>
-                <p><?= htmlspecialchars($contactContent['copy'], ENT_QUOTES, 'UTF-8') ?></p>
+                <h2>Interesse an hafermilch.de?</h2>
+                <p>
+                  Beschreiben Sie kurz, wer anfragt und wie die Domain genutzt
+                  werden soll. Die Anfrage wird direkt an info@hafermilch.de
+                  gesendet.
+                </p>
               </div>
 
               <form action="./send.php" method="post" accept-charset="UTF-8">
@@ -195,7 +141,7 @@ $flash = $messages[$status] ?? null;
                   <label for="website">Website</label>
                   <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
                 </div>
-                <input name="topic" type="hidden" value="<?= htmlspecialchars($topic, ENT_QUOTES, 'UTF-8') ?>" />
+                <input name="topic" type="hidden" value="domain" />
                 <label>
                   Name
                   <input name="name" type="text" autocomplete="name" required />
@@ -210,19 +156,14 @@ $flash = $messages[$status] ?? null;
                 </label>
                 <label>
                   Nachricht
-                  <textarea name="message" rows="5" required><?= htmlspecialchars($contactContent['message'], ENT_QUOTES, 'UTF-8') ?></textarea>
+                  <textarea name="message" rows="5" required>Ich interessiere mich für hafermilch.de und möchte über einen Erwerb oder eine Kooperation sprechen.</textarea>
                 </label>
-                <button type="submit"><?= htmlspecialchars($contactContent['button'], ENT_QUOTES, 'UTF-8') ?></button>
+                <button type="submit">Anfrage senden</button>
               </form>
             </div>
           </section>
         </div>
 
-        <aside class="rail rail-right">
-          <a class="ad-rail" href="./index.php?topic=ads#kontakt" aria-label="Rechte Werbefläche buchen">
-            <span>Anzeige</span>
-          </a>
-        </aside>
       </div>
     </main>
 

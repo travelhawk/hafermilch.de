@@ -8,10 +8,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$redirectBase = './index.php';
-
 if (!empty($_POST['website'] ?? '')) {
-    header('Location: ' . $redirectBase . '?status=success#kontakt', true, 302);
+    $honeypotRedirect = ($_POST['topic'] ?? 'domain') === 'ads'
+        ? './werbeflaechen.php?status=success#kontakt'
+        : './index.php?status=success#kontakt';
+    header('Location: ' . $honeypotRedirect, true, 302);
     exit;
 }
 
@@ -20,6 +21,7 @@ $email = trim((string) ($_POST['email'] ?? ''));
 $company = trim((string) ($_POST['company'] ?? ''));
 $message = trim((string) ($_POST['message'] ?? ''));
 $topic = $_POST['topic'] ?? 'domain';
+$redirectBase = $topic === 'ads' ? './werbeflaechen.php' : './index.php';
 
 if ($name === '' || $email === '' || $message === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     header('Location: ' . $redirectBase . '?status=error&topic=' . rawurlencode((string) $topic) . '#kontakt', true, 302);

@@ -136,11 +136,11 @@ p {
 }
 
 h1 {
-  font-size: clamp(3.1rem, 8vw, 6.9rem);
+  font-size: clamp(2.7rem, 5.8vw, 5.6rem);
   letter-spacing: -0.035em;
-  line-height: 1.01;
+  line-height: 1.04;
   margin-top: 1.35rem;
-  max-width: 900px;
+  max-width: 980px;
 }
 
 h2 {
@@ -218,60 +218,24 @@ figcaption span {
 }
 
 .page-grid {
-  display: grid;
-  gap: clamp(2rem, 4vw, 4rem);
-  grid-template-columns: 56px minmax(0, 1fr) 56px;
+  display: block;
   margin: 0 auto;
-  max-width: 1580px;
+  max-width: 1500px;
   padding: 2rem clamp(1rem, 3vw, 2rem);
 }
 
 .content {
-  max-width: 1120px;
+  max-width: 1500px;
   width: 100%;
-  justify-self: center;
+  margin: 0 auto;
 }
 
-.ad-rail {
-  align-items: center;
-  background: linear-gradient(180deg, rgba(190, 18, 60, 0.06), rgba(15, 23, 42, 0.02));
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: 999px;
-  color: rgba(15, 23, 42, 0.36);
-  display: flex;
-  justify-content: center;
-  min-height: 74vh;
-  opacity: 1;
-  overflow: hidden;
-  padding: 0.5rem 0.2rem;
-  position: sticky;
-  top: 1rem;
-}
-
-.ad-rail span,
 .ad-cards span {
   color: var(--rose);
   font-size: 0.75rem;
   font-weight: 900;
   letter-spacing: 0.13em;
   text-transform: uppercase;
-}
-
-.ad-rail span {
-  color: rgba(15, 23, 42, 0.34);
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-}
-
-.ad-rail strong {
-  font-size: 1.1rem;
-  line-height: 1.08;
-}
-
-.ad-rail small {
-  color: var(--muted);
-  font-size: 0.78rem;
-  font-weight: 700;
 }
 
 .section {
@@ -438,16 +402,6 @@ footer {
   font-size: 0.92rem;
   padding: 2rem 1rem;
   text-align: center;
-}
-
-@media (max-width: 1120px) {
-  .page-grid {
-    display: block;
-  }
-
-  .rail {
-    display: none;
-  }
 }
 
 @media (max-width: 820px) {

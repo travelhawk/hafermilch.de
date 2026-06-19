@@ -17,26 +17,27 @@ php -S localhost:3000
 
 Dann `http://localhost:3000` im Browser öffnen.
 
-## Kontaktformular
+## Mail-Konfiguration
 
-Das Formular sendet per `POST` an [send.php](./send.php) und verschickt die
-Anfrage an `info@hafermilch.de`.
+Die Mail-Einstellungen liegen in `.env`. Diese Datei ist in `.gitignore`
+eingetragen und wird nicht mit gepusht.
 
-Es gibt zwei Versandwege:
+Als Vorlage dient [.env.example](./.env.example).
 
-- Standardmäßig über PHP `mail()`, wenn der Webserver das bereits unterstützt.
-- Optional per SMTP über [smtp-config.php](./smtp-config.php).
+Wichtige Felder:
 
-Wenn `mail()` auf deinem Hosting nicht funktioniert, trägst du in
-[smtp-config.php](./smtp-config.php) diese Werte ein:
+- `TO_EMAIL`
+- `FROM_EMAIL`
+- `FROM_NAME`
+- `SMTP_HOST`
+- `SMTP_PORT`
+- `SMTP_ENCRYPTION`
+- `SMTP_USERNAME`
+- `SMTP_PASSWORD`
 
-- `smtp_host`
-- `smtp_port`
-- `smtp_encryption`
-- `smtp_username`
-- `smtp_password`
-
-Zusätzlich kannst du dort `from_email`, `from_name` und `to_email` anpassen.
+Wenn `SMTP_HOST`, `SMTP_USERNAME` und `SMTP_PASSWORD` leer sind, versucht das
+Projekt weiter über PHP `mail()` zu senden. Sobald du die SMTP-Daten einträgst,
+nutzt [send.php](./send.php) stattdessen SMTP.
 
 ## Zustellung
 

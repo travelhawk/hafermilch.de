@@ -1,14 +1,17 @@
 <?php
+declare(strict_types=1);
 
 $env = loadEnvFile(__DIR__ . '/.env');
+$site = require __DIR__ . '/site-config.php';
+$defaultDomain = (string) ($site['primary_domain'] ?? 'hafermolch.de');
 
 return [
     'to_email' => envValue($env, 'TO_EMAIL', 'info@hafermilch.de'),
     'from_email' => envValue($env, 'FROM_EMAIL', 'info@hafermilch.de'),
-    'from_name' => envValue($env, 'FROM_NAME', 'hafermilch.de'),
+    'from_name' => envValue($env, 'FROM_NAME', $defaultDomain),
     'smtp_host' => envValue($env, 'SMTP_HOST', ''),
     'smtp_port' => (int) envValue($env, 'SMTP_PORT', '587'),
-    'smtp_encryption' => envValue($env, 'SMTP_ENCRYPTION', 'tls'),
+    'smtp_encryption' => strtolower(envValue($env, 'SMTP_ENCRYPTION', 'tls')),
     'smtp_username' => envValue($env, 'SMTP_USERNAME', ''),
     'smtp_password' => envValue($env, 'SMTP_PASSWORD', ''),
     'smtp_timeout' => (int) envValue($env, 'SMTP_TIMEOUT', '15'),

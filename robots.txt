@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://hafermilch.de/sitemap.xml
+Sitemap: https://hafermolch.de/sitemap.php
+Sitemap: https://hafermolch.eu/sitemap.php
+Sitemap: https://hafermolch.com/sitemap.php

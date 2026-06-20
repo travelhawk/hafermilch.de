@@ -1,5 +1,20 @@
 <?php
+declare(strict_types=1);
+
+$site = require __DIR__ . '/site-config.php';
 $status = $_GET['status'] ?? null;
+$brandName = (string) ($site['brand_name'] ?? 'Hafermolch');
+$primaryDomain = (string) ($site['primary_domain'] ?? 'hafermolch.de');
+$domains = $site['domains'] ?? [$primaryDomain];
+$domainBundle = (string) ($site['domain_bundle'] ?? $primaryDomain);
+$currentHost = currentSiteHost($site);
+$baseUrl = rtrim(currentSiteBaseUrl($site), '/');
+
+$pageTitle = $brandName . ' Domains kaufen | .de, .eu und .com für Haferdrink-Marken';
+$pageDescription = $domainBundle . ' stehen als markantes Domain-Set für Haferdrink-Marken, Launches und Content-Projekte bereit. Kaufanfrage direkt online stellen.';
+$heroImage = 'https://images.unsplash.com/photo-1561375559-0eb5f0827f70?auto=format&fit=crop&w=1400&q=80';
+$imageStripLeft = 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1000&q=80';
+$imageStripRight = 'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=1000&q=80';
 
 $messages = [
     'success' => [
@@ -8,84 +23,76 @@ $messages = [
     ],
     'error' => [
         'class' => 'error',
-        'text' => 'Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder schreiben Sie an info@hafermilch.de.',
+        'text' => 'Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut.',
     ],
 ];
 
 $flash = $messages[$status] ?? null;
+$schema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'WebPage',
+    'name' => $brandName,
+    'url' => $baseUrl,
+    'description' => 'Markantes Domain-Set für Haferdrink-Marken, Handel und Content-Projekte.',
+    'inLanguage' => 'de',
+    'about' => [
+        '@type' => 'Thing',
+        'name' => 'Haferdrink Domain-Portfolio',
+    ],
+    'mainEntity' => [
+        '@type' => 'Product',
+        'name' => $domainBundle,
+        'category' => 'Domain Name Portfolio',
+        'description' => 'Domain-Set aus .de, .eu und .com für Haferdrink-Marken und Kampagnen.',
+        'offers' => [
+            '@type' => 'Offer',
+            'availability' => 'https://schema.org/InStock',
+            'url' => $baseUrl . '/#kontakt',
+        ],
+    ],
+];
 ?>
 <!doctype html>
 <html lang="de">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>hafermilch.de kaufen | Premium-Domain für Haferdrink-Marken</title>
-    <meta
-      name="description"
-      content="hafermilch.de ist als starke deutsche Kategorie-Domain für Haferdrink-Marken, Handel und Content-Projekte verfügbar. Kaufanfrage direkt online stellen."
-    />
+    <title><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?></title>
+    <meta name="description" content="<?= htmlspecialchars($pageDescription, ENT_QUOTES, 'UTF-8') ?>" />
     <meta name="robots" content="index,follow,max-image-preview:large" />
     <meta name="theme-color" content="#f3ead8" />
-    <meta property="og:title" content="hafermilch.de kaufen | Premium-Domain für Haferdrink-Marken" />
-    <meta
-      property="og:description"
-      content="Premium-Domain für Haferdrink-Marken, Handel und Content-Projekte. Kaufanfrage für hafermilch.de direkt online stellen."
-    />
+    <meta property="og:title" content="<?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?>" />
+    <meta property="og:description" content="<?= htmlspecialchars($pageDescription, ENT_QUOTES, 'UTF-8') ?>" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://hafermilch.de" />
+    <meta property="og:url" content="<?= htmlspecialchars($baseUrl, ENT_QUOTES, 'UTF-8') ?>" />
     <meta property="og:locale" content="de_DE" />
-    <meta
-      property="og:image"
-      content="https://images.unsplash.com/photo-1561375559-0eb5f0827f70?auto=format&fit=crop&w=1400&q=80"
-    />
+    <meta property="og:image" content="<?= htmlspecialchars($heroImage, ENT_QUOTES, 'UTF-8') ?>" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:title"
-      content="hafermilch.de kaufen | Premium-Domain für Haferdrink-Marken"
-    />
-    <meta
-      name="twitter:description"
-      content="Starke Kategorie-Domain für Haferdrink-Marken, Handel und Content-Projekte. Kaufanfrage direkt online stellen."
-    />
-    <meta
-      name="twitter:image"
-      content="https://images.unsplash.com/photo-1561375559-0eb5f0827f70?auto=format&fit=crop&w=1400&q=80"
-    />
-    <link rel="canonical" href="https://hafermilch.de" />
-    <link rel="alternate" hreflang="de" href="https://hafermilch.de" />
-    <link rel="alternate" hreflang="x-default" href="https://hafermilch.de" />
+    <meta name="twitter:title" content="<?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?>" />
+    <meta name="twitter:description" content="<?= htmlspecialchars($pageDescription, ENT_QUOTES, 'UTF-8') ?>" />
+    <meta name="twitter:image" content="<?= htmlspecialchars($heroImage, ENT_QUOTES, 'UTF-8') ?>" />
+    <link rel="canonical" href="<?= htmlspecialchars($baseUrl, ENT_QUOTES, 'UTF-8') ?>" />
+    <link rel="alternate" hreflang="de" href="<?= htmlspecialchars($baseUrl, ENT_QUOTES, 'UTF-8') ?>" />
+    <link rel="alternate" hreflang="x-default" href="<?= htmlspecialchars($baseUrl, ENT_QUOTES, 'UTF-8') ?>" />
     <link rel="stylesheet" href="./styles.css" />
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "hafermilch.de",
-        "url": "https://hafermilch.de",
-        "description": "Premium-Domain für Haferdrink-Marken, Handel und Content-Projekte.",
-        "inLanguage": "de",
-        "about": {
-          "@type": "Thing",
-          "name": "Haferdrink Domain"
-        },
-        "mainEntity": {
-          "@type": "Product",
-          "name": "hafermilch.de",
-          "category": "Domain Name",
-          "description": "Kategorie-Domain für Haferdrink-Marken, Handel und Content-Projekte.",
-          "offers": {
-            "@type": "Offer",
-            "availability": "https://schema.org/InStock",
-            "url": "https://hafermilch.de/#kontakt"
-          }
-        }
-      }
-    </script>
+    <script type="application/ld+json"><?= json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) ?></script>
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="#top">hafermilch.de</a>
+      <a class="brand" href="#top" aria-label="<?= htmlspecialchars($brandName, ENT_QUOTES, 'UTF-8') ?>">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="presentation">
+            <path d="M18 8C28 5 40 6 48 12c8 6 13 17 10 27-2 9-9 17-18 19-8 2-17-1-25-7C8 45 4 36 7 27c2-8 8-16 11-19z"></path>
+            <path d="M24 22c4-4 10-5 15-2 5 2 8 8 7 14-1 6-6 11-12 12-6 1-12-2-15-8-2-5-1-11 5-16z"></path>
+          </svg>
+        </span>
+        <span class="brand-text-group">
+          <span class="brand-text"><?= htmlspecialchars($brandName, ENT_QUOTES, 'UTF-8') ?></span>
+          <span class="brand-meta">de / eu / com</span>
+        </span>
+      </a>
       <nav aria-label="Hauptnavigation">
-        <a href="#domain">Domain</a>
+        <a href="#domain">Domains</a>
         <a href="./werbeflaechen.php">Werbung</a>
         <a href="#kontakt">Kontakt</a>
       </nav>
@@ -96,28 +103,32 @@ $flash = $messages[$status] ?? null;
       <section class="hero">
         <div class="hero-inner">
           <div class="hero-copy">
-            <p class="eyebrow">Premium-Domain für eine sichtbare Food-Kategorie</p>
-            <h1>hafermilch.de ist die Premium-Domain für den Haferdrink-Markt.</h1>
+            <p class="eyebrow">Drei starke TLDs für eine markante Haferdrink-Marke</p>
+            <h1>Hafermolch ist das markante Domain-Set für den Haferdrink-Markt.</h1>
+            <div class="domain-pills" aria-label="Verfügbare Hafermolch Domains">
+              <?php foreach ($domains as $domain): ?>
+                <span><?= htmlspecialchars((string) $domain, ENT_QUOTES, 'UTF-8') ?></span>
+              <?php endforeach; ?>
+            </div>
             <p class="lead">
-              Eine merkfähige deutsche Domain für Haferdrinks, pflanzliche
-              Ernährung, Handel, Content oder Kampagnen. Wer eine starke
-              Position in dieser Kategorie besetzen will, bekommt hier den
-              direktesten Namen im Markt.
+              Mit <?= htmlspecialchars($domainBundle, ENT_QUOTES, 'UTF-8') ?>
+              sichern Sie sich ein ungewöhnlich merkfähiges Namenspaket für
+              Produktlinien, Handel, Content oder Kampagnen rund um Haferdrinks.
             </p>
             <div class="hero-actions">
-              <a class="button primary" href="#kontakt">Verhandlung anfragen</a>
-              <a class="button secondary" href="./werbeflaechen.php">Werbeflächen anfragen</a>
+              <a class="button primary" href="#kontakt">Domainpaket anfragen</a>
+        <a class="button secondary" href="./werbeflaechen.php">Werbeflächen anfragen</a>
             </div>
           </div>
 
           <figure class="hero-media">
             <img
-              src="https://images.unsplash.com/photo-1561375559-0eb5f0827f70?auto=format&fit=crop&w=1400&q=80"
-              alt="Haferdrink wird in einen Eiskaffee gegossen"
+              src="<?= htmlspecialchars($heroImage, ENT_QUOTES, 'UTF-8') ?>"
+              alt="Haferdrink wird in einen Kaffee gegossen"
             />
             <figcaption>
-              <span>Kategorie-Domain</span>
-              Direkt, deutsch, suchstark und sofort verständlich.
+              <span>Domain Bundle</span>
+              Drei Domains, ein eigenständiges Markensignal.
             </figcaption>
           </figure>
         </div>
@@ -128,41 +139,41 @@ $flash = $messages[$status] ?? null;
           <section id="domain" class="section">
             <div class="split">
               <div>
-                <p class="section-kicker">Warum diese Domain</p>
-                <h2>Ein Name, der ohne Erklärung funktioniert.</h2>
+                <p class="section-kicker">Warum dieses Set</p>
+                <h2>Wiedererkennung plus komplette TLD-Abdeckung.</h2>
               </div>
               <p>
-                hafermilch.de passt zu Marken, Vergleichsportalen, Rezepten,
-                Handelskampagnen oder als strategische Weiterleitung. Die Domain
-                ist kurz, beschreibend und trifft die Alltagssprache der
-                Zielgruppe.
+                <?= htmlspecialchars($domainBundle, ENT_QUOTES, 'UTF-8') ?>
+                passen zu Marken, Produktlinien, Launches oder Content-Formaten,
+                die im Haferdrink-Markt nicht austauschbar wirken sollen. Das
+                Paket verbindet Eigenständigkeit mit klarer Themennähe.
               </p>
             </div>
 
             <div class="benefits">
               <article>
-                <h3>Direkter Begriff</h3>
-                <p>Keine Abkürzung, kein Erklärtext.</p>
+                <h3>Komplettes Set</h3>
+                <p>.de, .eu und .com sichern die wichtigsten TLDs direkt mit ab.</p>
               </article>
               <article>
-                <h3>Starke Kategorie</h3>
-                <p>Pflanzliche Drinks bleiben sichtbar.</p>
+                <h3>Eigenständiger Name</h3>
+                <p>Markant, erinnerbar und mit deutlich mehr Charakter als Standardbegriffe.</p>
               </article>
               <article>
                 <h3>Flexible Nutzung</h3>
-                <p>Brand, Portal, Kampagne oder Leadgen.</p>
+                <p>Brand, Kampagnen-Domain, Weiterleitung oder Content-Projekt.</p>
               </article>
             </div>
           </section>
 
-          <section class="image-strip" aria-label="Hafermilch Bilder">
+          <section class="image-strip" aria-label="Haferdrink Bilder">
             <img
-              src="https://images.unsplash.com/photo-1711357193114-ba93da3e2f01?auto=format&fit=crop&w=1000&q=80"
-              alt="Frühstücksschale mit Haferflocken und pflanzlichem Drink"
+              src="<?= htmlspecialchars($imageStripLeft, ENT_QUOTES, 'UTF-8') ?>"
+              alt="Haferflocken und Getreide auf rustikalem Holztisch"
             />
             <img
-              src="https://images.unsplash.com/photo-1588704486840-680342cff526?auto=format&fit=crop&w=1000&q=80"
-              alt="Kaffeezubereitung mit Haferdrink im Barista-Kontext"
+              src="<?= htmlspecialchars($imageStripRight, ENT_QUOTES, 'UTF-8') ?>"
+              alt="Frühstücksszene mit Granola, Beeren und pflanzlichem Milchersatz"
             />
           </section>
 
@@ -170,11 +181,11 @@ $flash = $messages[$status] ?? null;
             <div class="split">
               <div>
                 <p class="section-kicker">Kontaktformular</p>
-                <h2>Interesse an hafermilch.de?</h2>
+                <h2>Interesse am Hafermolch-Domainpaket?</h2>
                 <p>
-                  Beschreiben Sie kurz, wer anfragt und wie die Domain genutzt
-                  werden soll. Die Anfrage wird direkt an info@hafermilch.de
-                  gesendet.
+                  Beschreiben Sie kurz, wer anfragt und ob das komplette Set
+                  oder eine bestimmte Domain im Fokus steht. Die Anfrage landet
+                  direkt im Postfach für Domainverhandlungen.
                 </p>
               </div>
 
@@ -203,7 +214,7 @@ $flash = $messages[$status] ?? null;
                 </label>
                 <label>
                   Nachricht
-                  <textarea name="message" rows="5" required>Ich interessiere mich für hafermilch.de und möchte über einen Erwerb oder eine Kooperation sprechen.</textarea>
+                  <textarea name="message" rows="5" required>Ich interessiere mich für das Hafermolch-Domainpaket aus hafermolch.de, hafermolch.eu und hafermolch.com und möchte über einen Erwerb oder eine Kooperation sprechen.</textarea>
                 </label>
                 <button type="submit">Anfrage senden</button>
               </form>
@@ -214,7 +225,7 @@ $flash = $messages[$status] ?? null;
     </main>
 
     <footer>
-      <p>hafermilch.de - Domainanfragen und Werbeplatzierungen.</p>
+      <p><?= htmlspecialchars($brandName, ENT_QUOTES, 'UTF-8') ?> - Domainanfragen für <?= htmlspecialchars($domainBundle, ENT_QUOTES, 'UTF-8') ?>.</p>
     </footer>
   </body>
 </html>

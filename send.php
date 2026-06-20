@@ -1,7 +1,12 @@
 <?php
 declare(strict_types=1);
 
+$site = require __DIR__ . '/site-config.php';
 $config = require __DIR__ . '/smtp-config.php';
+$primaryDomain = (string) ($site['primary_domain'] ?? 'hafermilch.de');
+$currentHost = currentSiteHost($site);
+$domainBundle = (string) ($site['domain_bundle'] ?? $primaryDomain);
+$mailSubjectTarget = (string) ($site['mail_subject_target'] ?? $domainBundle);
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ./index.php#kontakt', true, 302);
@@ -30,24 +35,31 @@ if ($name === '' || $email === '' || $message === '' || !filter_var($email, FILT
 
 $to = $config['to_email'] ?? 'info@hafermilch.de';
 $fromEmail = $config['from_email'] ?? $to;
-$fromName = $config['from_name'] ?? 'hafermilch.de';
+$fromName = $config['from_name'] ?? $primaryDomain;
 $requestType = $topic === 'ads' ? 'Werbepartner-Anfrage' : 'Domain-Anfrage';
-$subject = $requestType . ' über hafermilch.de';
+$requestTarget = $topic === 'ads' ? $currentHost : $mailSubjectTarget;
+$subject = $requestType . ' über ' . $requestTarget;
 $safeName = preg_replace('/[\r\n]+/', ' ', $name) ?: 'Unbekannt';
 $safeEmail = preg_replace('/[\r\n]+/', '', $email) ?: '';
 $safeCompany = preg_replace('/[\r\n]+/', ' ', $company) ?: '-';
 
 $bodyLines = [
-    $requestType . ' über hafermilch.de',
+    $requestType . ' über ' . $requestTarget,
     '',
     'Anfragetyp: ' . $requestType,
     'Name: ' . $safeName,
     'E-Mail: ' . $safeEmail,
     'Unternehmen: ' . $safeCompany,
-    '',
-    'Nachricht:',
-    $message,
+    'Eingangs-Domain: ' . $currentHost,
 ];
+
+if ($topic !== 'ads') {
+    $bodyLines[] = 'Angefragtes Set: ' . $domainBundle;
+}
+
+$bodyLines[] = '';
+$bodyLines[] = 'Nachricht:';
+$bodyLines[] = $message;
 
 $body = implode("\r\n", $bodyLines);
 
@@ -88,6 +100,7 @@ function sendViaSmtp(array $config, string $fromEmail, string $fromName, string 
     $port = (int) ($config['smtp_port'] ?? 587);
     $timeout = (int) ($config['smtp_timeout'] ?? 15);
     $encryption = strtolower((string) ($config['smtp_encryption'] ?? 'tls'));
+
     if (($encryption === 'ssl' || $encryption === 'tls') && !extension_loaded('openssl')) {
         throw new RuntimeException('SMTP requires the PHP openssl extension for ' . strtoupper($encryption) . ' connections.');
     }
@@ -111,6 +124,7 @@ function sendViaSmtp(array $config, string $fromEmail, string $fromName, string 
         STREAM_CLIENT_CONNECT,
         $context
     );
+
     if (!is_resource($socket)) {
         throw new RuntimeException('SMTP connection failed: ' . $errstr . ' (' . $errno . ')');
     }
@@ -188,6 +202,7 @@ function sendSmtpCommand($socket, string $command, array $expectedCodes): string
 {
     fwrite($socket, $command . "\r\n");
     $response = readSmtpResponse($socket);
+
     if ($response === '' || !smtpResponseMatches($response, $expectedCodes)) {
         throw new RuntimeException('SMTP command failed: ' . $command);
     }

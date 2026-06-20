@@ -1,5 +1,15 @@
 <?php
+declare(strict_types=1);
+
+$site = require __DIR__ . '/site-config.php';
 $status = $_GET['status'] ?? null;
+$brandName = (string) ($site['brand_name'] ?? 'Hafermolch');
+$currentHost = currentSiteHost($site);
+$baseUrl = rtrim(currentSiteBaseUrl($site), '/');
+
+$pageTitle = 'Werbeflächen auf ' . $currentHost . ' anfragen | Partnerseite';
+$pageDescription = 'Werbeflächen auf ' . $currentHost . ' als Partneranfrage anfragen. Geeignet für Marken, Shops und passende Angebote im Haferdrink-Umfeld.';
+$heroImage = 'https://images.unsplash.com/photo-1588704486840-680342cff526?auto=format&fit=crop&w=1400&q=80';
 
 $messages = [
     'success' => [
@@ -8,79 +18,71 @@ $messages = [
     ],
     'error' => [
         'class' => 'error',
-        'text' => 'Die Werbeanfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder schreiben Sie an info@hafermilch.de.',
+        'text' => 'Die Werbeanfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut.',
     ],
 ];
 
 $flash = $messages[$status] ?? null;
+$schema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'WebPage',
+    'name' => 'Werbeflächen auf ' . $currentHost . ' anfragen',
+    'url' => $baseUrl . '/werbeflaechen.php',
+    'description' => 'Partneranfrage für Werbeflächen auf ' . $currentHost . '.',
+    'inLanguage' => 'de',
+    'mainEntity' => [
+        '@type' => 'Service',
+        'name' => 'Werbeflächen auf ' . $currentHost,
+        'serviceType' => 'Werbepartnerschaft',
+        'areaServed' => 'DE',
+        'url' => $baseUrl . '/werbeflaechen.php#kontakt',
+    ],
+];
 ?>
 <!doctype html>
 <html lang="de">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Werbeflächen auf hafermilch.de anfragen | Partnerseite</title>
-    <meta
-      name="description"
-      content="Werbeflächen auf hafermilch.de als Partneranfrage anfragen. Geeignet für Marken, Shops und passende Angebote im Haferdrink-Umfeld."
-    />
+    <title><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?></title>
+    <meta name="description" content="<?= htmlspecialchars($pageDescription, ENT_QUOTES, 'UTF-8') ?>" />
     <meta name="robots" content="index,follow,max-image-preview:large" />
     <meta name="theme-color" content="#f3ead8" />
-    <meta property="og:title" content="Werbeflächen auf hafermilch.de anfragen" />
-    <meta
-      property="og:description"
-      content="Partneranfrage für Werbeflächen auf hafermilch.de. Für Marken, Shops und passende Angebote im Haferdrink-Umfeld."
-    />
+    <meta property="og:title" content="<?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?>" />
+    <meta property="og:description" content="<?= htmlspecialchars($pageDescription, ENT_QUOTES, 'UTF-8') ?>" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://hafermilch.de/werbeflaechen.php" />
+    <meta property="og:url" content="<?= htmlspecialchars($baseUrl . '/werbeflaechen.php', ENT_QUOTES, 'UTF-8') ?>" />
     <meta property="og:locale" content="de_DE" />
-    <meta
-      property="og:image"
-      content="https://images.unsplash.com/photo-1588704486840-680342cff526?auto=format&fit=crop&w=1400&q=80"
-    />
+    <meta property="og:image" content="<?= htmlspecialchars($heroImage, ENT_QUOTES, 'UTF-8') ?>" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:title"
-      content="Werbeflächen auf hafermilch.de anfragen"
-    />
-    <meta
-      name="twitter:description"
-      content="Partneranfrage für Werbeflächen auf hafermilch.de im Haferdrink-Umfeld."
-    />
-    <meta
-      name="twitter:image"
-      content="https://images.unsplash.com/photo-1588704486840-680342cff526?auto=format&fit=crop&w=1400&q=80"
-    />
-    <link rel="canonical" href="https://hafermilch.de/werbeflaechen.php" />
-    <link rel="alternate" hreflang="de" href="https://hafermilch.de/werbeflaechen.php" />
+    <meta name="twitter:title" content="<?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?>" />
+    <meta name="twitter:description" content="<?= htmlspecialchars($pageDescription, ENT_QUOTES, 'UTF-8') ?>" />
+    <meta name="twitter:image" content="<?= htmlspecialchars($heroImage, ENT_QUOTES, 'UTF-8') ?>" />
+    <link rel="canonical" href="<?= htmlspecialchars($baseUrl . '/werbeflaechen.php', ENT_QUOTES, 'UTF-8') ?>" />
+    <link rel="alternate" hreflang="de" href="<?= htmlspecialchars($baseUrl . '/werbeflaechen.php', ENT_QUOTES, 'UTF-8') ?>" />
     <link rel="stylesheet" href="./styles.css" />
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "Werbeflächen auf hafermilch.de anfragen",
-        "url": "https://hafermilch.de/werbeflaechen.php",
-        "description": "Partneranfrage für Werbeflächen auf hafermilch.de.",
-        "inLanguage": "de",
-        "mainEntity": {
-          "@type": "Service",
-          "name": "Werbeflächen auf hafermilch.de",
-          "serviceType": "Werbepartnerschaft",
-          "areaServed": "DE",
-          "url": "https://hafermilch.de/werbeflaechen.php#kontakt"
-        }
-      }
-    </script>
+    <script type="application/ld+json"><?= json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) ?></script>
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="./index.php">hafermilch.de</a>
+      <a class="brand" href="./index.php" aria-label="<?= htmlspecialchars($brandName, ENT_QUOTES, 'UTF-8') ?>">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="presentation">
+            <path d="M18 8C28 5 40 6 48 12c8 6 13 17 10 27-2 9-9 17-18 19-8 2-17-1-25-7C8 45 4 36 7 27c2-8 8-16 11-19z"></path>
+            <path d="M24 22c4-4 10-5 15-2 5 2 8 8 7 14-1 6-6 11-12 12-6 1-12-2-15-8-2-5-1-11 5-16z"></path>
+          </svg>
+        </span>
+        <span class="brand-text-group">
+          <span class="brand-text"><?= htmlspecialchars($brandName, ENT_QUOTES, 'UTF-8') ?></span>
+          <span class="brand-meta">de / eu / com</span>
+        </span>
+      </a>
       <nav aria-label="Hauptnavigation">
-        <a href="./index.php#domain">Domain</a>
+        <a href="./index.php#domain">Domains</a>
         <a href="./werbeflaechen.php">Werbung</a>
         <a href="#kontakt">Kontakt</a>
       </nav>
-      <a class="header-cta" href="./index.php#kontakt">Domain anfragen</a>
+      <a class="header-cta" href="./index.php#kontakt">Domainpaket anfragen</a>
     </header>
 
     <main id="top">
@@ -88,10 +90,11 @@ $flash = $messages[$status] ?? null;
         <div class="hero-inner">
           <div class="hero-copy">
             <p class="eyebrow">Werbepartner-Anfrage</p>
-            <h1>Werbeflächen auf hafermilch.de gezielt anfragen.</h1>
+            <h1>Werbeflächen auf <?= htmlspecialchars($currentHost, ENT_QUOTES, 'UTF-8') ?> gezielt anfragen.</h1>
             <p class="lead">
               Für Marken, Shops und passende Angebote können Werbeformate auf
-              hafermilch.de separat angefragt werden. So bleibt die Domain als
+              <?= htmlspecialchars($currentHost, ENT_QUOTES, 'UTF-8') ?>
+              separat angefragt werden. So bleibt das Hafermolch-Domainset als
               Asset klar positioniert und Werbepartnerschaften laufen als
               eigener Vertriebskanal.
             </p>
@@ -99,8 +102,8 @@ $flash = $messages[$status] ?? null;
 
           <figure class="hero-media">
             <img
-              src="https://images.unsplash.com/photo-1588704486840-680342cff526?auto=format&fit=crop&w=1400&q=80"
-              alt="Kaffeezubereitung mit Haferdrink"
+              src="<?= htmlspecialchars($heroImage, ENT_QUOTES, 'UTF-8') ?>"
+              alt="Kaffeezubereitung mit Haferdrink im Barista-Kontext"
             />
             <figcaption>
               <span>Partnerflächen</span>
@@ -121,7 +124,7 @@ $flash = $messages[$status] ?? null;
               <p>
                 Beschreiben Sie kurz die gewünschte Platzierung, Marke,
                 Zielgruppe und Laufzeit. So lässt sich schneller einschätzen,
-                ob das Format zu hafermilch.de passt.
+                ob das Format zu <?= htmlspecialchars($currentHost, ENT_QUOTES, 'UTF-8') ?> passt.
               </p>
             </div>
 
@@ -180,7 +183,7 @@ $flash = $messages[$status] ?? null;
                 </label>
                 <label>
                   Nachricht
-                  <textarea name="message" rows="5" required>Ich interessiere mich für eine Werbepartnerschaft auf hafermilch.de und möchte verfügbare Platzierungen sowie Konditionen anfragen.</textarea>
+                  <textarea name="message" rows="5" required>Ich interessiere mich für eine Werbepartnerschaft auf <?= htmlspecialchars($currentHost, ENT_QUOTES, 'UTF-8') ?> und möchte verfügbare Platzierungen sowie Konditionen anfragen.</textarea>
                 </label>
                 <button type="submit">Werbeanfrage senden</button>
               </form>
@@ -191,7 +194,7 @@ $flash = $messages[$status] ?? null;
     </main>
 
     <footer>
-      <p>hafermilch.de - Domainanfragen und Werbeplatzierungen.</p>
+      <p><?= htmlspecialchars($brandName, ENT_QUOTES, 'UTF-8') ?> - Domainanfragen und Werbepartnerschaften.</p>
     </footer>
   </body>
 </html>

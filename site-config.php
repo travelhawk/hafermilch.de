@@ -1,52 +1,60 @@
 <?php
 declare(strict_types=1);
 
-function siteDomains(array $site): array
-{
-    $domains = $site['domains'] ?? [];
-    $normalized = [];
+if (!function_exists('siteDomains')) {
+    function siteDomains(array $site): array
+    {
+        $domains = $site['domains'] ?? [];
+        $normalized = [];
 
-    foreach ($domains as $domain) {
-        $domain = strtolower(trim((string) $domain));
-        if ($domain !== '') {
-            $normalized[] = $domain;
+        foreach ($domains as $domain) {
+            $domain = strtolower(trim((string) $domain));
+            if ($domain !== '') {
+                $normalized[] = $domain;
+            }
         }
-    }
 
-    return array_values(array_unique($normalized));
+        return array_values(array_unique($normalized));
+    }
 }
 
-function currentSiteHost(array $site): string
-{
-    $host = strtolower((string) ($_SERVER['HTTP_HOST'] ?? ''));
-    $host = preg_replace('/:\d+$/', '', $host) ?? $host;
-    $allowedDomains = siteDomains($site);
+if (!function_exists('currentSiteHost')) {
+    function currentSiteHost(array $site): string
+    {
+        $host = strtolower((string) ($_SERVER['HTTP_HOST'] ?? ''));
+        $host = preg_replace('/:\d+$/', '', $host) ?? $host;
+        $allowedDomains = siteDomains($site);
 
-    if ($host !== '' && in_array($host, $allowedDomains, true)) {
-        return $host;
+        if ($host !== '' && in_array($host, $allowedDomains, true)) {
+            return $host;
+        }
+
+        return (string) ($site['primary_domain'] ?? ($allowedDomains[0] ?? 'hafermolch.de'));
     }
-
-    return (string) ($site['primary_domain'] ?? ($allowedDomains[0] ?? 'hafermolch.de'));
 }
 
-function currentSiteScheme(): string
-{
-    $forwardedProto = strtolower((string) ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? ''));
-    if ($forwardedProto === 'https') {
-        return 'https';
-    }
+if (!function_exists('currentSiteScheme')) {
+    function currentSiteScheme(): string
+    {
+        $forwardedProto = strtolower((string) ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? ''));
+        if ($forwardedProto === 'https') {
+            return 'https';
+        }
 
-    $https = strtolower((string) ($_SERVER['HTTPS'] ?? ''));
-    if ($https !== '' && $https !== 'off') {
-        return 'https';
-    }
+        $https = strtolower((string) ($_SERVER['HTTPS'] ?? ''));
+        if ($https !== '' && $https !== 'off') {
+            return 'https';
+        }
 
-    return ((string) ($_SERVER['SERVER_PORT'] ?? '') === '443') ? 'https' : 'http';
+        return ((string) ($_SERVER['SERVER_PORT'] ?? '') === '443') ? 'https' : 'http';
+    }
 }
 
-function currentSiteBaseUrl(array $site): string
-{
-    return currentSiteScheme() . '://' . currentSiteHost($site);
+if (!function_exists('currentSiteBaseUrl')) {
+    function currentSiteBaseUrl(array $site): string
+    {
+        return currentSiteScheme() . '://' . currentSiteHost($site);
+    }
 }
 
 return [

@@ -10,8 +10,8 @@ $domainBundle = (string) ($site['domain_bundle'] ?? $primaryDomain);
 $currentHost = currentSiteHost($site);
 $baseUrl = rtrim(currentSiteBaseUrl($site), '/');
 
-$pageTitle = $brandName . ' Domains kaufen | .de, .eu und .com für Haferdrink-Marken';
-$pageDescription = $domainBundle . ' stehen als markantes Domain-Set für Haferdrink-Marken, Launches und Content-Projekte bereit. Kaufanfrage direkt online stellen.';
+$pageTitle = $brandName . ' domains for sale | .de, .eu and .com for oat drink brands';
+$pageDescription = $domainBundle . ' are available as a distinctive domain set for oat drink brands, launches, and content projects. Submit a purchase inquiry online.';
 $heroImage = 'https://images.unsplash.com/photo-1561375559-0eb5f0827f70?auto=format&fit=crop&w=1400&q=80';
 $imageStripLeft = 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1000&q=80';
 $imageStripRight = 'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=1000&q=80';
@@ -19,11 +19,11 @@ $imageStripRight = 'https://images.unsplash.com/photo-1473093295043-cdd812d0e601
 $messages = [
     'success' => [
         'class' => 'success',
-        'text' => 'Ihre Anfrage wurde erfolgreich gesendet. Wir melden uns per E-Mail.',
+        'text' => 'Your inquiry was sent successfully. We will get back to you by email.',
     ],
     'error' => [
         'class' => 'error',
-        'text' => 'Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut.',
+        'text' => 'Your inquiry could not be sent. Please try again.',
     ],
 ];
 
@@ -33,27 +33,27 @@ $schema = [
     '@type' => 'WebPage',
     'name' => $brandName,
     'url' => $baseUrl,
-    'description' => 'Markantes Domain-Set für Haferdrink-Marken, Handel und Content-Projekte.',
-    'inLanguage' => 'de',
+    'description' => 'Distinctive domain set for oat drink brands, commerce, and content projects.',
+    'inLanguage' => 'en',
     'about' => [
         '@type' => 'Thing',
-        'name' => 'Haferdrink Domain-Portfolio',
+        'name' => 'Oat drink domain portfolio',
     ],
     'mainEntity' => [
         '@type' => 'Product',
         'name' => $domainBundle,
         'category' => 'Domain Name Portfolio',
-        'description' => 'Domain-Set aus .de, .eu und .com für Haferdrink-Marken und Kampagnen.',
+        'description' => 'Domain set across .de, .eu, and .com for oat drink brands and campaigns.',
         'offers' => [
             '@type' => 'Offer',
             'availability' => 'https://schema.org/InStock',
-            'url' => $baseUrl . '/#kontakt',
+            'url' => $baseUrl . '/#contact',
         ],
     ],
 ];
 ?>
 <!doctype html>
-<html lang="de">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -65,14 +65,14 @@ $schema = [
     <meta property="og:description" content="<?= htmlspecialchars($pageDescription, ENT_QUOTES, 'UTF-8') ?>" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<?= htmlspecialchars($baseUrl, ENT_QUOTES, 'UTF-8') ?>" />
-    <meta property="og:locale" content="de_DE" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:image" content="<?= htmlspecialchars($heroImage, ENT_QUOTES, 'UTF-8') ?>" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="<?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?>" />
     <meta name="twitter:description" content="<?= htmlspecialchars($pageDescription, ENT_QUOTES, 'UTF-8') ?>" />
     <meta name="twitter:image" content="<?= htmlspecialchars($heroImage, ENT_QUOTES, 'UTF-8') ?>" />
     <link rel="canonical" href="<?= htmlspecialchars($baseUrl, ENT_QUOTES, 'UTF-8') ?>" />
-    <link rel="alternate" hreflang="de" href="<?= htmlspecialchars($baseUrl, ENT_QUOTES, 'UTF-8') ?>" />
+    <link rel="alternate" hreflang="en" href="<?= htmlspecialchars($baseUrl, ENT_QUOTES, 'UTF-8') ?>" />
     <link rel="alternate" hreflang="x-default" href="<?= htmlspecialchars($baseUrl, ENT_QUOTES, 'UTF-8') ?>" />
     <link rel="stylesheet" href="./styles.css" />
     <script type="application/ld+json"><?= json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) ?></script>
@@ -91,44 +91,44 @@ $schema = [
           <span class="brand-meta">de / eu / com</span>
         </span>
       </a>
-      <nav aria-label="Hauptnavigation">
-        <a href="#domain">Domains</a>
-        <a href="./werbeflaechen.php">Werbung</a>
-        <a href="#kontakt">Kontakt</a>
+      <nav aria-label="Main navigation">
+        <a href="#domains">Domains</a>
+        <a href="./werbeflaechen.php">Advertising</a>
+        <a href="#contact">Contact</a>
       </nav>
-      <a class="header-cta" href="#kontakt">Anfrage senden</a>
+      <a class="header-cta" href="#contact">Send inquiry</a>
     </header>
 
     <main id="top">
       <section class="hero">
         <div class="hero-inner">
           <div class="hero-copy">
-            <p class="eyebrow">Drei starke TLDs für eine markante Haferdrink-Marke</p>
-            <h1>Hafermolch ist das markante Domain-Set für den Haferdrink-Markt.</h1>
-            <div class="domain-pills" aria-label="Verfügbare Hafermolch Domains">
+            <p class="eyebrow">Three strong TLDs for a distinctive oat drink brand</p>
+            <h1>Hafermolch is the distinctive domain set for the oat drink market.</h1>
+            <div class="domain-pills" aria-label="Available Hafermolch domains">
               <?php foreach ($domains as $domain): ?>
                 <span><?= htmlspecialchars((string) $domain, ENT_QUOTES, 'UTF-8') ?></span>
               <?php endforeach; ?>
             </div>
             <p class="lead">
-              Mit <?= htmlspecialchars($domainBundle, ENT_QUOTES, 'UTF-8') ?>
-              sichern Sie sich ein ungewöhnlich merkfähiges Namenspaket für
-              Produktlinien, Handel, Content oder Kampagnen rund um Haferdrinks.
+              With <?= htmlspecialchars($domainBundle, ENT_QUOTES, 'UTF-8') ?>
+              you secure an unusually memorable naming package for product
+              lines, commerce, content, or campaigns around oat drinks.
             </p>
             <div class="hero-actions">
-              <a class="button primary" href="#kontakt">Domainpaket anfragen</a>
-        <a class="button secondary" href="./werbeflaechen.php">Werbeflächen anfragen</a>
+              <a class="button primary" href="#contact">Request domain bundle</a>
+              <a class="button secondary" href="./werbeflaechen.php">Request advertising</a>
             </div>
           </div>
 
           <figure class="hero-media">
             <img
               src="<?= htmlspecialchars($heroImage, ENT_QUOTES, 'UTF-8') ?>"
-              alt="Haferdrink wird in einen Kaffee gegossen"
+              alt="Oat drink being poured into coffee"
             />
             <figcaption>
-              <span>Domain Bundle</span>
-              Drei Domains, ein eigenständiges Markensignal.
+              <span>Domain bundle</span>
+              Three domains, one distinctive brand signal.
             </figcaption>
           </figure>
         </div>
@@ -136,56 +136,56 @@ $schema = [
 
       <div class="page-grid">
         <div class="content">
-          <section id="domain" class="section">
+          <section id="domains" class="section">
             <div class="split">
               <div>
-                <p class="section-kicker">Warum dieses Set</p>
-                <h2>Wiedererkennung plus komplette TLD-Abdeckung.</h2>
+                <p class="section-kicker">Why this set</p>
+                <h2>Memorability plus complete TLD coverage.</h2>
               </div>
               <p>
                 <?= htmlspecialchars($domainBundle, ENT_QUOTES, 'UTF-8') ?>
-                passen zu Marken, Produktlinien, Launches oder Content-Formaten,
-                die im Haferdrink-Markt nicht austauschbar wirken sollen. Das
-                Paket verbindet Eigenständigkeit mit klarer Themennähe.
+                fit brands, product lines, launches, or content formats that
+                should not feel interchangeable in the oat drink market. The
+                set combines distinctiveness with clear category relevance.
               </p>
             </div>
 
             <div class="benefits">
               <article>
-                <h3>Komplettes Set</h3>
-                <p>.de, .eu und .com sichern die wichtigsten TLDs direkt mit ab.</p>
+                <h3>Complete set</h3>
+                <p>.de, .eu, and .com secure the key TLDs in one move.</p>
               </article>
               <article>
-                <h3>Eigenständiger Name</h3>
-                <p>Markant, erinnerbar und mit deutlich mehr Charakter als Standardbegriffe.</p>
+                <h3>Distinctive name</h3>
+                <p>Striking, memorable, and more characteristic than generic terms.</p>
               </article>
               <article>
-                <h3>Flexible Nutzung</h3>
-                <p>Brand, Kampagnen-Domain, Weiterleitung oder Content-Projekt.</p>
+                <h3>Flexible use</h3>
+                <p>Brand, campaign domain, redirect, or content project.</p>
               </article>
             </div>
           </section>
 
-          <section class="image-strip" aria-label="Haferdrink Bilder">
+          <section class="image-strip" aria-label="Oat drink images">
             <img
               src="<?= htmlspecialchars($imageStripLeft, ENT_QUOTES, 'UTF-8') ?>"
-              alt="Haferflocken und Getreide auf rustikalem Holztisch"
+              alt="Oats and grains on a rustic wooden table"
             />
             <img
               src="<?= htmlspecialchars($imageStripRight, ENT_QUOTES, 'UTF-8') ?>"
-              alt="Frühstücksszene mit Granola, Beeren und pflanzlichem Milchersatz"
+              alt="Breakfast scene with granola, berries, and plant-based milk alternative"
             />
           </section>
 
-          <section id="kontakt" class="section contact-section">
+          <section id="contact" class="section contact-section">
             <div class="split">
               <div>
-                <p class="section-kicker">Kontaktformular</p>
-                <h2>Interesse am Hafermolch-Domainpaket?</h2>
+                <p class="section-kicker">Contact form</p>
+                <h2>Interested in the Hafermolch domain bundle?</h2>
                 <p>
-                  Beschreiben Sie kurz, wer anfragt und ob das komplette Set
-                  oder eine bestimmte Domain im Fokus steht. Die Anfrage landet
-                  direkt im Postfach für Domainverhandlungen.
+                  Briefly describe who is inquiring and whether the focus is on
+                  the full set or a specific domain. The message goes directly
+                  to the mailbox for domain negotiations.
                 </p>
               </div>
 
@@ -205,18 +205,18 @@ $schema = [
                   <input name="name" type="text" autocomplete="name" required />
                 </label>
                 <label>
-                  E-Mail
+                  Email
                   <input name="email" type="email" autocomplete="email" required />
                 </label>
                 <label>
-                  Unternehmen
+                  Company
                   <input name="company" type="text" autocomplete="organization" />
                 </label>
                 <label>
-                  Nachricht
-                  <textarea name="message" rows="5" required>Ich interessiere mich für das Hafermolch-Domainpaket aus hafermolch.de, hafermolch.eu und hafermolch.com und möchte über einen Erwerb oder eine Kooperation sprechen.</textarea>
+                  Message
+                  <textarea name="message" rows="5" required>I am interested in the Hafermolch domain bundle consisting of hafermolch.de, hafermolch.eu, and hafermolch.com and would like to discuss an acquisition or cooperation.</textarea>
                 </label>
-                <button type="submit">Anfrage senden</button>
+                <button type="submit">Send inquiry</button>
               </form>
             </div>
           </section>
@@ -225,7 +225,7 @@ $schema = [
     </main>
 
     <footer>
-      <p><?= htmlspecialchars($brandName, ENT_QUOTES, 'UTF-8') ?> - Domainanfragen für <?= htmlspecialchars($domainBundle, ENT_QUOTES, 'UTF-8') ?>.</p>
+      <p><?= htmlspecialchars($brandName, ENT_QUOTES, 'UTF-8') ?> - domain inquiries for <?= htmlspecialchars($domainBundle, ENT_QUOTES, 'UTF-8') ?>.</p>
     </footer>
   </body>
 </html>

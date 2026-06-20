@@ -1,30 +1,30 @@
 # hafermilch.de
 
-Landingpage für die Domain `hafermilch.de` mit Kontaktformular und schlankem
-PHP-Mailversand. Der Fokus liegt auf Domain-Anfragen für Verhandlungen und
-optionalen Werbeplatzierungen.
+Landing page for the domain `hafermilch.de` with a contact form and a slim
+PHP mail delivery flow. The focus is on domain inquiries for negotiations and
+optional advertising placements.
 
 ## Getting Started
 
-Die Seite braucht keinen Build-Schritt. Für das Formular wird nur ein Webserver
-mit PHP benötigt.
+The site does not require a build step. The form only needs a web server with
+PHP support.
 
-Lokal starten:
+Run locally:
 
 ```bash
 php -S localhost:3000
 ```
 
-Dann `http://localhost:3000` im Browser öffnen.
+Then open `http://localhost:3000` in the browser.
 
-## Mail-Konfiguration
+## Mail Configuration
 
-Die Mail-Einstellungen liegen in `.env`. Diese Datei ist in `.gitignore`
-eingetragen und wird nicht mit gepusht.
+Mail settings live in `.env`. That file is listed in `.gitignore` and is not
+pushed to the repository.
 
-Als Vorlage dient [.env.example](./.env.example).
+Use [.env.example](./.env.example) as the template.
 
-Wichtige Felder:
+Important fields:
 
 - `TO_EMAIL`
 - `FROM_EMAIL`
@@ -35,16 +35,16 @@ Wichtige Felder:
 - `SMTP_USERNAME`
 - `SMTP_PASSWORD`
 
-Wenn `SMTP_HOST`, `SMTP_USERNAME` und `SMTP_PASSWORD` leer sind, versucht das
-Projekt weiter über PHP `mail()` zu senden. Sobald du die SMTP-Daten einträgst,
-nutzt [send.php](./send.php) stattdessen SMTP.
+If `SMTP_HOST`, `SMTP_USERNAME`, and `SMTP_PASSWORD` are empty, the project
+will continue trying to send through PHP `mail()`. As soon as you add SMTP
+credentials, [send.php](./send.php) will use SMTP instead.
 
-## Zustellung
+## Delivery
 
-Für zuverlässige Zustellung sollten passende SPF-, DKIM- und DMARC-Einträge für
-die Domain gesetzt sein.
+For reliable delivery, the domain should have matching SPF, DKIM, and DMARC
+records configured.
 
 ## Deployment
 
-Dieses Setup ist für klassische PHP-Webserver oder Shared Hosting gedacht.
-Vercel ist dafür nicht geeignet.
+This setup is intended for classic PHP web servers or shared hosting.
+Vercel is not suitable for it.

@@ -9,14 +9,14 @@ $domainBundle = (string) ($site['domain_bundle'] ?? $primaryDomain);
 $mailSubjectTarget = (string) ($site['mail_subject_target'] ?? $domainBundle);
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ./index.php#kontakt', true, 302);
+    header('Location: ./index.php#contact', true, 302);
     exit;
 }
 
 if (!empty($_POST['website'] ?? '')) {
     $honeypotRedirect = ($_POST['topic'] ?? 'domain') === 'ads'
-        ? './werbeflaechen.php?status=success#kontakt'
-        : './index.php?status=success#kontakt';
+        ? './werbeflaechen.php?status=success#contact'
+        : './index.php?status=success#contact';
     header('Location: ' . $honeypotRedirect, true, 302);
     exit;
 }
@@ -29,36 +29,36 @@ $topic = $_POST['topic'] ?? 'domain';
 $redirectBase = $topic === 'ads' ? './werbeflaechen.php' : './index.php';
 
 if ($name === '' || $email === '' || $message === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    header('Location: ' . $redirectBase . '?status=error&topic=' . rawurlencode((string) $topic) . '#kontakt', true, 302);
+    header('Location: ' . $redirectBase . '?status=error&topic=' . rawurlencode((string) $topic) . '#contact', true, 302);
     exit;
 }
 
 $to = $config['to_email'] ?? 'info@hafermilch.de';
 $fromEmail = $config['from_email'] ?? $to;
 $fromName = $config['from_name'] ?? $primaryDomain;
-$requestType = $topic === 'ads' ? 'Werbepartner-Anfrage' : 'Domain-Anfrage';
+$requestType = $topic === 'ads' ? 'Advertising partnership inquiry' : 'Domain inquiry';
 $requestTarget = $topic === 'ads' ? $currentHost : $mailSubjectTarget;
-$subject = $requestType . ' über ' . $requestTarget;
-$safeName = preg_replace('/[\r\n]+/', ' ', $name) ?: 'Unbekannt';
+$subject = $requestType . ' via ' . $requestTarget;
+$safeName = preg_replace('/[\r\n]+/', ' ', $name) ?: 'Unknown';
 $safeEmail = preg_replace('/[\r\n]+/', '', $email) ?: '';
 $safeCompany = preg_replace('/[\r\n]+/', ' ', $company) ?: '-';
 
 $bodyLines = [
-    $requestType . ' über ' . $requestTarget,
+    $requestType . ' via ' . $requestTarget,
     '',
-    'Anfragetyp: ' . $requestType,
+    'Request type: ' . $requestType,
     'Name: ' . $safeName,
-    'E-Mail: ' . $safeEmail,
-    'Unternehmen: ' . $safeCompany,
-    'Eingangs-Domain: ' . $currentHost,
+    'Email: ' . $safeEmail,
+    'Company: ' . $safeCompany,
+    'Inbound domain: ' . $currentHost,
 ];
 
 if ($topic !== 'ads') {
-    $bodyLines[] = 'Angefragtes Set: ' . $domainBundle;
+    $bodyLines[] = 'Requested set: ' . $domainBundle;
 }
 
 $bodyLines[] = '';
-$bodyLines[] = 'Nachricht:';
+$bodyLines[] = 'Message:';
 $bodyLines[] = $message;
 
 $body = implode("\r\n", $bodyLines);
@@ -72,7 +72,7 @@ try {
     $sent = false;
 }
 
-header('Location: ' . $redirectBase . '?status=' . ($sent ? 'success' : 'error') . '&topic=' . rawurlencode((string) $topic) . '#kontakt', true, 302);
+header('Location: ' . $redirectBase . '?status=' . ($sent ? 'success' : 'error') . '&topic=' . rawurlencode((string) $topic) . '#contact', true, 302);
 exit;
 
 function hasSmtpConfig(array $config): bool

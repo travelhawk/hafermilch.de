@@ -19,20 +19,67 @@ $flash = $messages[$status] ?? null;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>hafermilch.de | Domain für Hafermilch-Marken</title>
+    <title>hafermilch.de kaufen | Premium-Domain für Haferdrink-Marken</title>
     <meta
       name="description"
-      content="hafermilch.de ist als starke deutsche Kategorie-Domain verfügbar. Interessenten können eine Anfrage für Verhandlungen stellen."
+      content="hafermilch.de ist als starke deutsche Kategorie-Domain für Haferdrink-Marken, Handel und Content-Projekte verfügbar. Kaufanfrage direkt online stellen."
     />
-    <meta property="og:title" content="hafermilch.de" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <meta name="theme-color" content="#f3ead8" />
+    <meta property="og:title" content="hafermilch.de kaufen | Premium-Domain für Haferdrink-Marken" />
     <meta
       property="og:description"
-      content="Die Domain für Hafermilch, pflanzliche Drinks und passende Werbeplatzierungen."
+      content="Premium-Domain für Haferdrink-Marken, Handel und Content-Projekte. Kaufanfrage für hafermilch.de direkt online stellen."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://hafermilch.de" />
+    <meta property="og:locale" content="de_DE" />
+    <meta
+      property="og:image"
+      content="https://images.unsplash.com/photo-1561375559-0eb5f0827f70?auto=format&fit=crop&w=1400&q=80"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="hafermilch.de kaufen | Premium-Domain für Haferdrink-Marken"
+    />
+    <meta
+      name="twitter:description"
+      content="Starke Kategorie-Domain für Haferdrink-Marken, Handel und Content-Projekte. Kaufanfrage direkt online stellen."
+    />
+    <meta
+      name="twitter:image"
+      content="https://images.unsplash.com/photo-1561375559-0eb5f0827f70?auto=format&fit=crop&w=1400&q=80"
+    />
     <link rel="canonical" href="https://hafermilch.de" />
+    <link rel="alternate" hreflang="de" href="https://hafermilch.de" />
+    <link rel="alternate" hreflang="x-default" href="https://hafermilch.de" />
     <link rel="stylesheet" href="./styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "hafermilch.de",
+        "url": "https://hafermilch.de",
+        "description": "Premium-Domain für Haferdrink-Marken, Handel und Content-Projekte.",
+        "inLanguage": "de",
+        "about": {
+          "@type": "Thing",
+          "name": "Haferdrink Domain"
+        },
+        "mainEntity": {
+          "@type": "Product",
+          "name": "hafermilch.de",
+          "category": "Domain Name",
+          "description": "Kategorie-Domain für Haferdrink-Marken, Handel und Content-Projekte.",
+          "offers": {
+            "@type": "Offer",
+            "availability": "https://schema.org/InStock",
+            "url": "https://hafermilch.de/#kontakt"
+          }
+        }
+      }
+    </script>
   </head>
   <body>
     <header class="site-header">
@@ -163,7 +210,6 @@ $flash = $messages[$status] ?? null;
             </div>
           </section>
         </div>
-
       </div>
     </main>
 

@@ -56,6 +56,7 @@ try {
         ? sendViaSmtp($config, $fromEmail, $fromName, $to, $safeEmail, $subject, $body)
         : sendViaPhpMail($fromEmail, $fromName, $to, $safeEmail, $subject, $body);
 } catch (Throwable $exception) {
+    logMailError($exception->getMessage());
     $sent = false;
 }
 
@@ -87,35 +88,53 @@ function sendViaSmtp(array $config, string $fromEmail, string $fromName, string 
     $port = (int) ($config['smtp_port'] ?? 587);
     $timeout = (int) ($config['smtp_timeout'] ?? 15);
     $encryption = strtolower((string) ($config['smtp_encryption'] ?? 'tls'));
-    $transport = $encryption === 'ssl' ? 'ssl://' . $host : $host;
+    if (($encryption === 'ssl' || $encryption === 'tls') && !extension_loaded('openssl')) {
+        throw new RuntimeException('SMTP requires the PHP openssl extension for ' . strtoupper($encryption) . ' connections.');
+    }
 
-    $socket = stream_socket_client($transport . ':' . $port, $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT);
+    $transport = $encryption === 'ssl' ? 'ssl://' . $host : $host;
+    $context = stream_context_create([
+        'ssl' => [
+            'verify_peer' => true,
+            'verify_peer_name' => true,
+            'allow_self_signed' => false,
+            'peer_name' => $host,
+            'SNI_enabled' => true,
+        ],
+    ]);
+
+    $socket = stream_socket_client(
+        $transport . ':' . $port,
+        $errno,
+        $errstr,
+        $timeout,
+        STREAM_CLIENT_CONNECT,
+        $context
+    );
     if (!is_resource($socket)) {
-        return false;
+        throw new RuntimeException('SMTP connection failed: ' . $errstr . ' (' . $errno . ')');
     }
 
     stream_set_timeout($socket, $timeout);
 
     if (!expectSmtpCode($socket, [220])) {
         fclose($socket);
-        return false;
+        throw new RuntimeException('SMTP server did not return a 220 greeting.');
     }
 
     $localHost = $_SERVER['SERVER_NAME'] ?? 'localhost';
-    sendSmtpCommand($socket, 'EHLO ' . $localHost, [250]);
+    $ehloResponse = sendSmtpCommand($socket, 'EHLO ' . $localHost, [250]);
 
     if ($encryption === 'tls') {
         sendSmtpCommand($socket, 'STARTTLS', [220]);
         if (!stream_socket_enable_crypto($socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT)) {
             fclose($socket);
-            return false;
+            throw new RuntimeException('Failed to start TLS on the SMTP connection.');
         }
-        sendSmtpCommand($socket, 'EHLO ' . $localHost, [250]);
+        $ehloResponse = sendSmtpCommand($socket, 'EHLO ' . $localHost, [250]);
     }
 
-    sendSmtpCommand($socket, 'AUTH LOGIN', [334]);
-    sendSmtpCommand($socket, base64_encode((string) $config['smtp_username']), [334]);
-    sendSmtpCommand($socket, base64_encode((string) $config['smtp_password']), [235]);
+    authenticateSmtp($socket, $ehloResponse, (string) $config['smtp_username'], (string) $config['smtp_password']);
     sendSmtpCommand($socket, 'MAIL FROM:<' . $fromEmail . '>', [250]);
     sendSmtpCommand($socket, 'RCPT TO:<' . $to . '>', [250, 251]);
     sendSmtpCommand($socket, 'DATA', [354]);
@@ -136,7 +155,7 @@ function sendViaSmtp(array $config, string $fromEmail, string $fromName, string 
 
     if (!expectSmtpCode($socket, [250])) {
         fclose($socket);
-        return false;
+        throw new RuntimeException('SMTP server rejected the message body.');
     }
 
     sendSmtpCommand($socket, 'QUIT', [221]);
@@ -145,31 +164,41 @@ function sendViaSmtp(array $config, string $fromEmail, string $fromName, string 
     return true;
 }
 
-function sendSmtpCommand($socket, string $command, array $expectedCodes): void
+function authenticateSmtp($socket, string $ehloResponse, string $username, string $password): void
+{
+    $capabilities = strtoupper($ehloResponse);
+
+    if (str_contains($capabilities, 'AUTH PLAIN')) {
+        $payload = base64_encode("\0" . $username . "\0" . $password);
+        sendSmtpCommand($socket, 'AUTH PLAIN ' . $payload, [235]);
+        return;
+    }
+
+    if (str_contains($capabilities, 'AUTH LOGIN') || str_contains($capabilities, 'AUTH=LOGIN')) {
+        sendSmtpCommand($socket, 'AUTH LOGIN', [334]);
+        sendSmtpCommand($socket, base64_encode($username), [334]);
+        sendSmtpCommand($socket, base64_encode($password), [235]);
+        return;
+    }
+
+    throw new RuntimeException('SMTP server does not advertise a supported AUTH method.');
+}
+
+function sendSmtpCommand($socket, string $command, array $expectedCodes): string
 {
     fwrite($socket, $command . "\r\n");
-    if (!expectSmtpCode($socket, $expectedCodes)) {
+    $response = readSmtpResponse($socket);
+    if ($response === '' || !smtpResponseMatches($response, $expectedCodes)) {
         throw new RuntimeException('SMTP command failed: ' . $command);
     }
+
+    return $response;
 }
 
 function expectSmtpCode($socket, array $expectedCodes): bool
 {
-    $response = '';
-
-    while (($line = fgets($socket, 515)) !== false) {
-        $response .= $line;
-        if (strlen($line) >= 4 && $line[3] === ' ') {
-            break;
-        }
-    }
-
-    if ($response === '') {
-        return false;
-    }
-
-    $code = (int) substr($response, 0, 3);
-    return in_array($code, $expectedCodes, true);
+    $response = readSmtpResponse($socket);
+    return $response !== '' && smtpResponseMatches($response, $expectedCodes);
 }
 
 function formatAddress(string $email, string $name): string
@@ -187,4 +216,30 @@ function normalizeSmtpBody(string $body): string
     $normalized = str_replace(["\r\n", "\r"], "\n", $body);
     $normalized = preg_replace('/^\./m', '..', $normalized);
     return str_replace("\n", "\r\n", $normalized ?? $body);
+}
+
+function readSmtpResponse($socket): string
+{
+    $response = '';
+
+    while (($line = fgets($socket, 515)) !== false) {
+        $response .= $line;
+        if (strlen($line) >= 4 && $line[3] === ' ') {
+            break;
+        }
+    }
+
+    return $response;
+}
+
+function smtpResponseMatches(string $response, array $expectedCodes): bool
+{
+    $code = (int) substr($response, 0, 3);
+    return in_array($code, $expectedCodes, true);
+}
+
+function logMailError(string $message): void
+{
+    $line = '[' . date('c') . '] ' . $message . PHP_EOL;
+    error_log($line, 3, __DIR__ . '/mail-error.log');
 }

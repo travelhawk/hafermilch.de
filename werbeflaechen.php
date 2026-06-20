@@ -19,13 +19,58 @@ $flash = $messages[$status] ?? null;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>hafermilch.de | Werbeflächen anfragen</title>
+    <title>Werbeflächen auf hafermilch.de anfragen | Partnerseite</title>
     <meta
       name="description"
-      content="Werbeflächen auf hafermilch.de als Partneranfrage anfragen."
+      content="Werbeflächen auf hafermilch.de als Partneranfrage anfragen. Geeignet für Marken, Shops und passende Angebote im Haferdrink-Umfeld."
+    />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <meta name="theme-color" content="#f3ead8" />
+    <meta property="og:title" content="Werbeflächen auf hafermilch.de anfragen" />
+    <meta
+      property="og:description"
+      content="Partneranfrage für Werbeflächen auf hafermilch.de. Für Marken, Shops und passende Angebote im Haferdrink-Umfeld."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://hafermilch.de/werbeflaechen.php" />
+    <meta property="og:locale" content="de_DE" />
+    <meta
+      property="og:image"
+      content="https://images.unsplash.com/photo-1588704486840-680342cff526?auto=format&fit=crop&w=1400&q=80"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Werbeflächen auf hafermilch.de anfragen"
+    />
+    <meta
+      name="twitter:description"
+      content="Partneranfrage für Werbeflächen auf hafermilch.de im Haferdrink-Umfeld."
+    />
+    <meta
+      name="twitter:image"
+      content="https://images.unsplash.com/photo-1588704486840-680342cff526?auto=format&fit=crop&w=1400&q=80"
     />
     <link rel="canonical" href="https://hafermilch.de/werbeflaechen.php" />
+    <link rel="alternate" hreflang="de" href="https://hafermilch.de/werbeflaechen.php" />
     <link rel="stylesheet" href="./styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Werbeflächen auf hafermilch.de anfragen",
+        "url": "https://hafermilch.de/werbeflaechen.php",
+        "description": "Partneranfrage für Werbeflächen auf hafermilch.de.",
+        "inLanguage": "de",
+        "mainEntity": {
+          "@type": "Service",
+          "name": "Werbeflächen auf hafermilch.de",
+          "serviceType": "Werbepartnerschaft",
+          "areaServed": "DE",
+          "url": "https://hafermilch.de/werbeflaechen.php#kontakt"
+        }
+      }
+    </script>
   </head>
   <body>
     <header class="site-header">
@@ -142,7 +187,6 @@ $flash = $messages[$status] ?? null;
             </div>
           </section>
         </div>
-
       </div>
     </main>
 

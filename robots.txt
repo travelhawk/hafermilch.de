@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hafermilch.de/sitemap.xml

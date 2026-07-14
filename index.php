@@ -226,6 +226,10 @@ $schema = [
 
     <footer>
       <p><?= htmlspecialchars($brandName, ENT_QUOTES, 'UTF-8') ?> - domain inquiries for <?= htmlspecialchars($domainBundle, ENT_QUOTES, 'UTF-8') ?>.</p>
+      <p class="footer-links">
+        <a href="./impressum.php">Legal notice</a>
+        <a href="./datenschutz.php">Privacy policy</a>
+      </p>
     </footer>
   </body>
 </html>

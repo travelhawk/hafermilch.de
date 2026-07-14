@@ -296,7 +296,7 @@ declare(strict_types=1);
       // Quelltext steht (schützt vor einfachen E-Mail-Harvestern). Zusammensetzung
       // erst beim Rendern bzw. beim Klick.
       (function () {
-        var reversed = 'ed.hcslimrefah@ofni';
+        var reversed = 'ed.hclimrefah@ofni';
         var address = reversed.split('').reverse().join('');
         var link = document.getElementById('contact-mail');
         if (!link) { return; }

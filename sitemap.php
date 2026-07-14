@@ -17,6 +17,16 @@ $entries = [
         'changefreq' => 'monthly',
         'priority' => '0.7',
     ],
+    [
+        'loc' => $baseUrl . '/impressum.php',
+        'changefreq' => 'yearly',
+        'priority' => '0.2',
+    ],
+    [
+        'loc' => $baseUrl . '/datenschutz.php',
+        'changefreq' => 'yearly',
+        'priority' => '0.2',
+    ],
 ];
 
 echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";

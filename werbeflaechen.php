@@ -195,6 +195,10 @@ $schema = [
 
     <footer>
       <p><?= htmlspecialchars($brandName, ENT_QUOTES, 'UTF-8') ?> - Domainanfragen und Werbepartnerschaften.</p>
+      <p class="footer-links">
+        <a href="./impressum.php">Impressum</a>
+        <a href="./datenschutz.php">Datenschutz</a>
+      </p>
     </footer>
   </body>
 </html>

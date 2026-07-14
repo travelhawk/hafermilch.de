@@ -437,3 +437,37 @@ footer {
     font-size: 3.15rem;
   }
 }
+
+.footer-links {
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
+  margin-top: 0.6rem;
+}
+
+.footer-links a {
+  color: inherit;
+}
+
+.legal h1 {
+  margin-bottom: 1.2rem;
+}
+
+.legal h2 {
+  margin-top: 2rem;
+}
+
+.legal h3 {
+  margin-top: 1.4rem;
+}
+
+.legal p,
+.legal li {
+  margin-top: 0.7rem;
+  max-width: 68ch;
+}
+
+.legal ul {
+  list-style: disc;
+  padding-left: 1.4rem;
+}

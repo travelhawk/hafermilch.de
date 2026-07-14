@@ -215,6 +215,10 @@ $flash = $messages[$status] ?? null;
 
     <footer>
       <p>hafermilch.de - Domainanfragen und Werbeplatzierungen.</p>
+      <p class="footer-links">
+        <a href="./impressum.php">Impressum</a>
+        <a href="./datenschutz.php">Datenschutz</a>
+      </p>
     </footer>
   </body>
 </html>

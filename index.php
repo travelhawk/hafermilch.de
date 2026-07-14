@@ -8,7 +8,7 @@ $messages = [
     ],
     'error' => [
         'class' => 'error',
-        'text' => 'Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder schreiben Sie an info@hafermilch.de.',
+        'text' => 'Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder schreiben Sie uns per E-Mail (Adresse im Impressum).',
     ],
 ];
 
@@ -173,7 +173,8 @@ $flash = $messages[$status] ?? null;
                 <h2>Interesse an hafermilch.de?</h2>
                 <p>
                   Beschreiben Sie kurz, wer anfragt und wie die Domain genutzt
-                  werden soll. Die Anfrage wird direkt an info@hafermilch.de
+                  werden soll. Die Anfrage wird direkt an
+                  <a id="contact-mail" href="#" rel="nofollow">unsere E-Mail-Adresse</a>
                   gesendet.
                 </p>
               </div>
@@ -220,5 +221,22 @@ $flash = $messages[$status] ?? null;
         <a href="./datenschutz.php">Datenschutz</a>
       </p>
     </footer>
+
+    <script>
+      // Kontaktadresse rückwärts hinterlegt, damit die Klartext-Adresse nicht im
+      // Quelltext steht (schützt vor einfachen E-Mail-Harvestern). Zusammensetzung
+      // erst beim Rendern bzw. beim Klick.
+      (function () {
+        var reversed = 'ed.hcslimrefah@ofni';
+        var address = reversed.split('').reverse().join('');
+        var link = document.getElementById('contact-mail');
+        if (!link) { return; }
+        link.textContent = address;
+        link.addEventListener('click', function (event) {
+          event.preventDefault();
+          window.location.href = 'mailto:' + address;
+        });
+      })();
+    </script>
   </body>
 </html>

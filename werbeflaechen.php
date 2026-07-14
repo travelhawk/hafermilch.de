@@ -8,7 +8,7 @@ $messages = [
     ],
     'error' => [
         'class' => 'error',
-        'text' => 'Die Werbeanfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder schreiben Sie an info@hafermilch.de.',
+        'text' => 'Die Werbeanfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder schreiben Sie uns per E-Mail (Adresse im Impressum).',
     ],
 ];
 

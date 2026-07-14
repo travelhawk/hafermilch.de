@@ -133,7 +133,7 @@ $baseUrl = rtrim(currentSiteBaseUrl($site), '/');
       // Contact address stored reversed so the plain-text address never appears in the
       // source (defeats simple email harvesters). Assembled at render/click time only.
       (function () {
-        var reversed = 'ed.hcslimrefah@ofni';
+        var reversed = 'ed.hclimrefah@ofni';
         var address = reversed.split('').reverse().join('');
         var link = document.getElementById('contact-mail');
         if (!link) { return; }
